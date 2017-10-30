@@ -22,7 +22,7 @@ void setup() {
   }
 }
 
-void loop() {
+void update() {
   mTrend.update();
 
   if ((millis() - lastGet > 5000) && (WiFi.status() == WL_CONNECTED)) {
@@ -38,5 +38,9 @@ void loop() {
     }
     http.end();
   }
+}
+
+void loop() {
+  update();
 }
 

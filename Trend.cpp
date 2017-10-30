@@ -10,7 +10,7 @@ uint32_t Trend::allColors[] = { Adafruit_NeoPixel::Color(111, 40, 104),
                                 Adafruit_NeoPixel::Color(52, 173, 62),
                                 Adafruit_NeoPixel::Color(153, 215, 31),
                                 Adafruit_NeoPixel::Color(203, 235, 15),
-                                Adafruit_NeoPixel::Color(255, 248, 123),
+                                Adafruit_NeoPixel::Color(255, 248, 0),
                                 Adafruit_NeoPixel::Color(255, 204, 1),
                                 Adafruit_NeoPixel::Color(255, 152, 0),
                                 Adafruit_NeoPixel::Color(255, 102, 1),
@@ -27,12 +27,14 @@ Trend::Trend() {
 void Trend::update() {
   if (lerpPosition >= 1.0) return;
 
-  lerpPosition = constrain(lerpPosition + 0.05, 0.0, 1.0);
   mPixels = new Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
   mPixels->begin();
+
+  lerpPosition = constrain(lerpPosition + 0.05, 0.0, 1.0);
   for (int i = 0; i < NUMPIXELS; i++) {
     mPixels->setPixelColor(i, lerpColor(lerpColors[0], lerpColors[1], lerpPosition));
   }
+
   mPixels->show();
   delay(15);
   delete mPixels;
