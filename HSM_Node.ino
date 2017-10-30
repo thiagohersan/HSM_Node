@@ -6,7 +6,9 @@
 #include "Trend.h"
 #include "wifipass.h"
 
-#define TREND "iot"
+#define TREND 0
+//#define ENDPOINT "https://trendometer-test.herokuapp.com/panel/cubes/"
+#define ENDPOINT "https://www.random.org/integers/?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today"
 #define NUM_TRENDS 24.0
 
 Trend mTrend;
@@ -25,14 +27,14 @@ void loop() {
 
   if ((millis() - lastGet > 5000) && (WiFi.status() == WL_CONNECTED)) {
     HTTPClient http;
-    http.begin("https://www.random.org/integers/?num=1&min=0&max=23&col=1&base=10&format=plain&rnd=today");
+    http.begin(ENDPOINT);
     int httpCode = http.GET();
     delay(10);
 
     if (httpCode == HTTP_CODE_OK) {
-      float rank = http.getString().toFloat();
+      float colorPercent = http.getString().toFloat() / 100.0;
       lastGet = millis();
-      mTrend.setColor(rank / NUM_TRENDS);
+      mTrend.setColor(colorPercent);
     }
     http.end();
   }
