@@ -25,6 +25,10 @@ void Trend::setColor(float percent) {
   lerpColors[0] = lerpColors[1];
   lerpColors[1] = lerpColor(temperatureColors[0], temperatureColors[1], percent);
   lerpPosition = 0.0;
+
+  while (lerpPosition < 1.0) {
+    update();
+  }
 }
 
 uint32_t Trend::lerpColor(uint32_t c0, uint32_t c1, float pos) {

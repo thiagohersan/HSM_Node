@@ -1,3 +1,5 @@
+// board LED is connected to pin 2
+
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
@@ -23,8 +25,6 @@ void setup() {
 }
 
 void update() {
-  mTrend.update();
-
   if ((millis() - lastGet > 5000) && (WiFi.status() == WL_CONNECTED)) {
     HTTPClient http;
     http.begin(ENDPOINT);
