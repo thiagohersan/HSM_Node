@@ -1,6 +1,6 @@
 #include "Trend.h"
 
-uint32_t Trend::temperatureColors[] = { 0x36a9fe, 0xff4399 };
+uint32_t Trend::temperatureColors[] = { 0x3199e6, 0xe63c8a };
 
 Trend::Trend() {
   lerpPosition = 1.0;
