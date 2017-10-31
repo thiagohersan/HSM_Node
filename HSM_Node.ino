@@ -34,9 +34,11 @@ void update() {
     if (httpCode == HTTP_CODE_OK) {
       float colorPercent = http.getString().toFloat() / 100.0;
       lastGet = millis();
+      http.end();
       mTrend.setColor(colorPercent);
+    } else {
+      http.end();
     }
-    http.end();
   }
 }
 
