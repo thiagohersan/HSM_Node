@@ -14,18 +14,9 @@
 #define NUM_TRENDS 24.0
 
 Trend mTrend;
-long lastGet;
-
-void setup() {
-  lastGet = millis();
-  WiFi.begin(WIFI, PASS);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-  }
-}
 
 void update() {
-  if ((millis() - lastGet > 5000) && (WiFi.status() == WL_CONNECTED)) {
+  if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
     http.begin(ENDPOINT);
     int httpCode = http.GET();
@@ -33,7 +24,6 @@ void update() {
 
     if (httpCode == HTTP_CODE_OK) {
       float colorPercent = http.getString().toFloat() / 100.0;
-      lastGet = millis();
       http.end();
       mTrend.setColor(colorPercent);
     } else {
@@ -42,7 +32,18 @@ void update() {
   }
 }
 
-void loop() {
+void setup() {
+  pinMode(2, OUTPUT);
+  WiFi.begin(WIFI, PASS);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+  }
+
+  digitalWrite(2, LOW);
   update();
+  digitalWrite(2, HIGH);
+  ESP.deepSleep(20e6);
 }
+
+void loop() {}
 
