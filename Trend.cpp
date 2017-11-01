@@ -1,6 +1,6 @@
 #include "Trend.h"
 
-uint32_t Trend::temperatureColors[] = { 0x3199e6, 0xe63c8a };
+uint32_t Trend::temperatureColors[] = { 0x36a9f6, 0x5f00cc, 0xff2323 };
 
 Trend::Trend() {
   lerpPosition = 1.0;
@@ -23,7 +23,12 @@ void Trend::update() {
 }
 void Trend::setColor(float percent) {
   lerpColors[0] = lerpColors[1];
-  lerpColors[1] = lerpColor(temperatureColors[0], temperatureColors[1], percent);
+
+  if (percent < 0.5) {
+    lerpColors[1] = lerpColor(temperatureColors[0], temperatureColors[1], 2*percent);
+  } else {
+    lerpColors[1] = lerpColor(temperatureColors[1], temperatureColors[2], 2*(percent-0.5));
+  }
   lerpPosition = 0.0;
 
   while (lerpPosition < 1.0) {
