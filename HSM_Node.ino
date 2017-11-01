@@ -1,5 +1,3 @@
-// board LED is connected to pin 2
-
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
@@ -8,10 +6,10 @@
 #include "Trend.h"
 #include "wifipass.h"
 
-#define TREND 0
-//#define ENDPOINT "https://trendometer-test.herokuapp.com/panel/cubes/"
-#define ENDPOINT "https://www.random.org/integers/?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today"
-#define NUM_TRENDS 24.0
+//#define ENDPOINT "https://www.random.org/integers/?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today"
+String TREND = "2";
+String ENDPOINT = "http://10.10.81.200:3000/panel/cubes/";
+float NUM_TRENDS = 24.0;
 
 Trend mTrend;
 
@@ -34,6 +32,7 @@ void update() {
 
 void setup() {
   pinMode(2, OUTPUT);
+  ENDPOINT += TREND;
   WiFi.begin(WIFI, PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -42,7 +41,7 @@ void setup() {
   digitalWrite(2, LOW);
   update();
   digitalWrite(2, HIGH);
-  ESP.deepSleep(20e6);
+  ESP.deepSleep(60e6);
 }
 
 void loop() {}
