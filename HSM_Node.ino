@@ -3,7 +3,7 @@
 #include <ESP8266HTTPClient.h>
 #include <Adafruit_NeoPixel.h>
 
-#define TEST 1
+#define TEST 0
 
 #include "Trend.h"
 #include "wifipass.h"
@@ -13,10 +13,9 @@ String ENDPOINT = "https://www.random.org/integers/";
 String TREND = "?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today";
 #else
 String ENDPOINT = "http://10.10.81.200:3000/panel/cubes/";
-String TREND = "9";
+String TREND = "23";
 #endif
 
-float NUM_TRENDS = 24.0;
 double SLEEP = 180e6;
 
 Trend mTrend;
