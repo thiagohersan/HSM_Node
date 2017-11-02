@@ -2,38 +2,26 @@
 
 uint32_t Trend::temperatureColors[] = { 0x36a9f6, 0x5f00cc, 0xff2323 };
 
-Trend::Trend() {
-  lerpPosition = 1.0;
-}
+Trend::Trend() {}
 
-void Trend::update() {
-  if (lerpPosition >= 1.0) return;
+void Trend::setColor(float percent) {
+  if (percent < 0.5) {
+    mColor = lerpColor(temperatureColors[0], temperatureColors[1], 2 * percent);
+  } else {
+    mColor = lerpColor(temperatureColors[1], temperatureColors[2], 2 * (percent - 0.5));
+  }
 
   mPixels = new Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
   mPixels->begin();
 
-  lerpPosition = constrain(lerpPosition + 0.05, 0.0, 1.0);
   for (int i = 0; i < NUMPIXELS; i++) {
-    mPixels->setPixelColor(i, lerpColor(lerpColors[0], lerpColors[1], lerpPosition));
+    mPixels->setPixelColor(i, mColor);
   }
+  mPixels->setBrightness(constrain(percent * 255.0, 32, 255));
 
   mPixels->show();
   delay(15);
   delete mPixels;
-}
-void Trend::setColor(float percent) {
-  lerpColors[0] = lerpColors[1];
-
-  if (percent < 0.5) {
-    lerpColors[1] = lerpColor(temperatureColors[0], temperatureColors[1], 2*percent);
-  } else {
-    lerpColors[1] = lerpColor(temperatureColors[1], temperatureColors[2], 2*(percent-0.5));
-  }
-  lerpPosition = 0.0;
-
-  while (lerpPosition < 1.0) {
-    update();
-  }
 }
 
 uint32_t Trend::lerpColor(uint32_t c0, uint32_t c1, float pos) {
