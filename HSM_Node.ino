@@ -13,10 +13,10 @@ String ENDPOINT = "https://www.random.org/integers/";
 String TREND = "?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today";
 #else
 String ENDPOINT = "http://10.10.81.200:3000/panel/cubes/";
-String TREND = "23";
+String TREND = "18";
 #endif
 
-double SLEEP = 180e6;
+double SLEEP = 30e6;
 
 Trend mTrend;
 
