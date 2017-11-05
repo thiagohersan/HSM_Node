@@ -12,7 +12,7 @@
 String ENDPOINT = "https://www.random.org/integers/";
 String TREND = "?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today";
 #else
-String ENDPOINT = "http://10.10.81.200:3000/panel/cubes/";
+String ENDPOINT = "http://10.10.119.10:3000/panel/cubes/";
 String TREND = "1";
 #endif
 
