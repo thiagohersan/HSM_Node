@@ -1,54 +1,70 @@
-#include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
+#include <WiFiUdp.h>
 #include <ESP8266HTTPClient.h>
-#include <Adafruit_NeoPixel.h>
+#include <ArduinoOTA.h>
 
-#define TEST 0
+#include <Adafruit_NeoPixel.h>
 
 #include "Trend.h"
 #include "wifipass.h"
 
-#if TEST
-String ENDPOINT = "https://www.random.org/integers/";
-String TREND = "?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today";
-#else
-String ENDPOINT = "http://10.10.119.10:3000/panel/cubes/";
-String TREND = "1";
-#endif
+int TREND_ORDER[] = {7, 12, 18, 8, 4, 21, 24, 22, 16, 2, 17, 11, 9, 10, 23, 5, 3, 1, 15, 20, 13, 6, 14, 19};
+int TREND_ORDER_SIZE = 24;
 
-double SLEEP = 30e6;
+int TREND = 19;
+String HOSTNAME = "ToM-";
+
+int SLEEP_MILLIS = 30e3;
 
 Trend mTrend;
-
-void update() {
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
-    http.begin(ENDPOINT + TREND);
-    int httpCode = http.GET();
-    delay(10);
-
-    if (httpCode == HTTP_CODE_OK) {
-      float colorPercent = http.getString().toFloat() / 100.0;
-      http.end();
-      mTrend.setColor(colorPercent);
-    } else {
-      http.end();
-    }
-  }
-}
+long nextUpdate;
 
 void setup() {
   pinMode(2, OUTPUT);
+  Serial.begin(115200);
+
+  nextUpdate = 0;
+  HOSTNAME += TREND;
+
+  WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI, PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
 
-  digitalWrite(2, LOW);
-  update();
-  digitalWrite(2, HIGH);
-  ESP.deepSleep(SLEEP);
+  ArduinoOTA.setHostname(HOSTNAME.c_str());
+  ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+    else if (error == OTA_END_ERROR) Serial.println("End Failed");
+  });
+  ArduinoOTA.begin();
 }
 
-void loop() {}
+int find(int arr[], int arrSize, int item) {
+  for (int i = 0; i < arrSize; i++) {
+    if (arr[i] == item) {
+      return i;
+    }
+  }
+  return arrSize;
+}
+
+void loop() {
+  if (millis() > nextUpdate) {
+    int found_index = find(TREND_ORDER, TREND_ORDER_SIZE, TREND);
+    if (found_index <= TREND_ORDER_SIZE) {
+      float colorPercent = (float(TREND_ORDER_SIZE) - found_index) / float(TREND_ORDER_SIZE);
+      mTrend.setColor(colorPercent);
+    }
+    nextUpdate += SLEEP_MILLIS;
+  }
+  digitalWrite(2, ((nextUpdate / SLEEP_MILLIS) % 2));
+
+  ArduinoOTA.handle();
+}
 
