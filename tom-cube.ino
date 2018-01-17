@@ -10,10 +10,13 @@
 #include "wifipass.h"
 #include "parameters.h"
 
-String SERVER_ADDRESS = "10.75.124.30";
-int SERVER_PORT = 8000;
-String ENDPOINT_BINARY = "/bin/" + BINARY_VERSION + "/" + TREND;
-String ENDPOINT_CUBE = "/panel/cubes/" + TREND;
+String BINARY_SERVER_ADDRESS = "10.75.124.30";
+int BINARY_SERVER_PORT = 8000;
+String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION + "/" + TREND;
+
+String TREND_SERVER_ADDRESS = "10.75.124.30";
+int TREND_SERVER_PORT = 8000;
+String TREND_SERVER_ENDPOINT = "/panel/cubes/" + TREND;
 
 int SLEEP_MILLIS = 5e3;
 long nextUpdate;
@@ -24,7 +27,7 @@ Trend mTrend;
 void update() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin("http://" + SERVER_ADDRESS + ":" + SERVER_PORT + ENDPOINT_CUBE);
+    http.begin("http://" + TREND_SERVER_ADDRESS + ":" + TREND_SERVER_PORT + TREND_SERVER_ENDPOINT);
     int httpCode = http.GET();
     delay(10);
 
@@ -53,7 +56,7 @@ void setup() {
   }
 
 
-  t_httpUpdate_return ret = ESPhttpUpdate.update(SERVER_ADDRESS, SERVER_PORT, ENDPOINT_BINARY, "", false, "", false);
+  t_httpUpdate_return ret = ESPhttpUpdate.update(BINARY_SERVER_ADDRESS, BINARY_SERVER_PORT, BINARY_SERVER_ENDPOINT, "", false, "", false);
   switch (ret) {
     case HTTP_UPDATE_FAILED:
       Serial.println("[UPDATE] failed.");
