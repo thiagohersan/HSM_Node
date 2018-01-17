@@ -1,29 +1,30 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <ESP8266httpUpdate.h>
 #include <Adafruit_NeoPixel.h>
 
-#define TEST 0
+#define TEST 1
 
 #include "Trend.h"
 #include "wifipass.h"
+#include "parameters.h"
 
-#if TEST
-String ENDPOINT = "https://www.random.org/integers/";
-String TREND = "?num=1&min=0&max=100&col=1&base=10&format=plain&rnd=today";
-#else
-String ENDPOINT = "http://10.10.119.10:3000/panel/cubes/";
-String TREND = "1";
-#endif
+String SERVER_ADDRESS = "10.75.124.30";
+int SERVER_PORT = 8000;
+String ENDPOINT_BINARY = "/bin/" + BINARY_VERSION + "/" + TREND;
+String ENDPOINT_CUBE = "/panel/cubes/" + TREND;
 
-double SLEEP = 30e6;
+int SLEEP_MILLIS = 5e3;
+long nextUpdate;
+bool needsReset = false;
 
 Trend mTrend;
 
 void update() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin(ENDPOINT + TREND);
+    http.begin("http://" + SERVER_ADDRESS + ":" + SERVER_PORT + ENDPOINT_CUBE);
     int httpCode = http.GET();
     delay(10);
 
@@ -38,17 +39,48 @@ void update() {
 }
 
 void setup() {
+  Serial.begin(115200);
+  Serial.println("\n");
   pinMode(2, OUTPUT);
+
+  mTrend.setColor(0.0);
+  nextUpdate = millis() + SLEEP_MILLIS;
+
+  WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI, PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
 
-  digitalWrite(2, LOW);
-  update();
-  digitalWrite(2, HIGH);
-  ESP.deepSleep(SLEEP);
+
+  t_httpUpdate_return ret = ESPhttpUpdate.update(SERVER_ADDRESS, SERVER_PORT, ENDPOINT_BINARY, "", false, "", false);
+  switch (ret) {
+    case HTTP_UPDATE_FAILED:
+      Serial.println("[UPDATE] failed.");
+      break;
+    case HTTP_UPDATE_NO_UPDATES:
+      Serial.println("[UPDATE] NO update.");
+      break;
+    case HTTP_UPDATE_OK:
+      Serial.println("[UPDATE] OK.");
+      needsReset = true;
+      break;
+  }
 }
 
-void loop() {}
+void reset() {
+  mTrend.setColor(0);
+  delay(1000);
+  ESP.deepSleep(500e3);
+}
+
+void loop() {
+  if (needsReset) reset();
+
+  if (millis() > nextUpdate) {
+    update();
+    nextUpdate += SLEEP_MILLIS;
+  }
+  digitalWrite(2, (nextUpdate / SLEEP_MILLIS) % 2);
+}
 

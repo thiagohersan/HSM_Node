@@ -17,7 +17,7 @@ void Trend::setColor(float percent) {
   for (int i = 0; i < NUMPIXELS; i++) {
     mPixels->setPixelColor(i, mColor);
   }
-  //mPixels->setBrightness(constrain(percent * 255.0, 32, 255));
+  mPixels->setBrightness(100);
 
   mPixels->show();
   delay(15);
