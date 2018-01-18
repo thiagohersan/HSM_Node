@@ -8,7 +8,7 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define TEST 1
+#define TEST 0
 
 #include "Trend.h"
 #include "wifipass.h"
@@ -16,11 +16,11 @@
 
 String OTA_HOSTNAME = "ToM-";
 
-String BINARY_SERVER_ADDRESS = "10.75.124.30";
+String BINARY_SERVER_ADDRESS = "10.10.81.100";
 int BINARY_SERVER_PORT = 8000;
 String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION + "/" + TREND;
 
-String TREND_SERVER_ADDRESS = "10.75.124.30";
+String TREND_SERVER_ADDRESS = "10.10.81.100";
 int TREND_SERVER_PORT = 8000;
 String TREND_SERVER_ENDPOINT = "/panel/cubes/" + TREND;
 
