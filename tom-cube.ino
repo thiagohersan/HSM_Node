@@ -24,23 +24,6 @@ bool needsReset = false;
 
 Trend mTrend;
 
-void update() {
-  if (WiFi.status() == WL_CONNECTED) {
-    HTTPClient http;
-    http.begin("http://" + TREND_SERVER_ADDRESS + ":" + TREND_SERVER_PORT + TREND_SERVER_ENDPOINT);
-    int httpCode = http.GET();
-    delay(10);
-
-    if (httpCode == HTTP_CODE_OK) {
-      float colorPercent = http.getString().toFloat() / 100.0;
-      http.end();
-      mTrend.setColor(colorPercent);
-    } else {
-      http.end();
-    }
-  }
-}
-
 void setup() {
   Serial.begin(115200);
   Serial.println("\n");
@@ -54,7 +37,41 @@ void setup() {
     delay(500);
   }
 
+  checkForNewBinary();
+}
 
+void update() {
+  if (WiFi.status() != WL_CONNECTED) return;
+
+  HTTPClient http;
+  http.begin("http://" + TREND_SERVER_ADDRESS + ":" + TREND_SERVER_PORT + TREND_SERVER_ENDPOINT);
+  int httpCode = http.GET();
+  delay(10);
+
+  if (httpCode == HTTP_CODE_OK) {
+    float colorPercent = http.getString().toFloat() / 100.0;
+    http.end();
+    mTrend.setColor(colorPercent);
+  } else {
+    http.end();
+  }
+}
+
+void loop() {
+  if (needsReset) reset();
+
+  if (millis() > nextUpdate) {
+    update();
+    nextUpdate += SLEEP_MILLIS;
+  }
+  digitalWrite(2, (nextUpdate / SLEEP_MILLIS) % 2);
+}
+
+void reset() {
+  ESP.deepSleep(500e3);
+}
+
+void checkForNewBinary() {
   t_httpUpdate_return ret = ESPhttpUpdate.update(BINARY_SERVER_ADDRESS, BINARY_SERVER_PORT, BINARY_SERVER_ENDPOINT, "", false, "", false);
   switch (ret) {
     case HTTP_UPDATE_FAILED:
@@ -68,19 +85,5 @@ void setup() {
       needsReset = true;
       break;
   }
-}
-
-void reset() {
-  ESP.deepSleep(500e3);
-}
-
-void loop() {
-  if (needsReset) reset();
-
-  if (millis() > nextUpdate) {
-    update();
-    nextUpdate += SLEEP_MILLIS;
-  }
-  digitalWrite(2, (nextUpdate / SLEEP_MILLIS) % 2);
 }
 
