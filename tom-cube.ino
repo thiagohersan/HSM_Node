@@ -1,7 +1,11 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
+#include <ESP8266mDNS.h>
+#include <WiFiUdp.h>
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
+#include <ArduinoOTA.h>
+
 #include <Adafruit_NeoPixel.h>
 
 #define TEST 1
@@ -9,6 +13,8 @@
 #include "Trend.h"
 #include "wifipass.h"
 #include "parameters.h"
+
+String OTA_HOSTNAME = "ToM-";
 
 String BINARY_SERVER_ADDRESS = "10.75.124.30";
 int BINARY_SERVER_PORT = 8000;
@@ -30,6 +36,7 @@ void setup() {
   pinMode(2, OUTPUT);
 
   nextUpdate = millis() + SLEEP_MILLIS;
+  OTA_HOSTNAME += TREND;
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI, PASS);
@@ -37,6 +44,7 @@ void setup() {
     delay(500);
   }
 
+  setupAndStartOTA();
   checkForNewBinary();
 }
 
@@ -65,6 +73,7 @@ void loop() {
     nextUpdate += SLEEP_MILLIS;
   }
   digitalWrite(2, (nextUpdate / SLEEP_MILLIS) % 2);
+  ArduinoOTA.handle();
 }
 
 void reset() {
@@ -85,5 +94,18 @@ void checkForNewBinary() {
       needsReset = true;
       break;
   }
+}
+
+void setupAndStartOTA() {
+  ArduinoOTA.setHostname(OTA_HOSTNAME.c_str());
+  ArduinoOTA.onError([](ota_error_t error) {
+    Serial.printf("Error[%u]: ", error);
+    if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
+    else if (error == OTA_BEGIN_ERROR) Serial.println("Begin Failed");
+    else if (error == OTA_CONNECT_ERROR) Serial.println("Connect Failed");
+    else if (error == OTA_RECEIVE_ERROR) Serial.println("Receive Failed");
+    else if (error == OTA_END_ERROR) Serial.println("End Failed");
+  });
+  ArduinoOTA.begin();
 }
 
