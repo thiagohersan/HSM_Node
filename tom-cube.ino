@@ -18,8 +18,8 @@ String TREND_SERVER_ADDRESS = "10.75.124.30";
 int TREND_SERVER_PORT = 8000;
 String TREND_SERVER_ENDPOINT = "/panel/cubes/" + TREND;
 
-int SLEEP_MILLIS = 5e3;
-long nextUpdate;
+long SLEEP_MILLIS = 5e3L;
+long nextUpdate = 0L;
 bool needsReset = false;
 
 Trend mTrend;
@@ -46,7 +46,6 @@ void setup() {
   Serial.println("\n");
   pinMode(2, OUTPUT);
 
-  mTrend.setColor(0.0);
   nextUpdate = millis() + SLEEP_MILLIS;
 
   WiFi.mode(WIFI_STA);
@@ -72,8 +71,6 @@ void setup() {
 }
 
 void reset() {
-  mTrend.setColor(0);
-  delay(1000);
   ESP.deepSleep(500e3);
 }
 
