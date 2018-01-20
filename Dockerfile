@@ -15,7 +15,7 @@ WORKDIR /opt/build/
 RUN mkdir deps/tom-cube && cp *.* deps/tom-cube/
 
 WORKDIR /opt/build/deps/tom-cube
-RUN md5Hash=$(cat tom-cube.ino Trend.* | md5sum | grep -oP [0-9a-fA-F]+) && \
+RUN md5Hash=$(cat tom-cube.ino Trend.h Trend.cpp | md5sum | grep -oP [0-9a-fA-F]+) && \
     sed -i "s/deadbeef/${md5Hash}/g" parameters.h
 
 WORKDIR /opt/build/deps/
