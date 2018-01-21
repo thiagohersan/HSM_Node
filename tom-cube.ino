@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <EEPROM.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
@@ -12,17 +13,19 @@
 
 #include "Trend.h"
 #include "wifipass.h"
-#include "parameters.h"
+
+String BINARY_VERSION = "deadbeef";
 
 String OTA_HOSTNAME = "ToM-";
+String TREND = "";
 
 String BINARY_SERVER_ADDRESS = "10.10.81.100";
 int BINARY_SERVER_PORT = 8000;
-String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION + "/" + TREND;
+String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION + "/";
 
 String TREND_SERVER_ADDRESS = "10.10.81.100";
 int TREND_SERVER_PORT = 8000;
-String TREND_SERVER_ENDPOINT = "/panel/cubes/" + TREND;
+String TREND_SERVER_ENDPOINT = "/panel/cubes/";
 
 long SLEEP_MILLIS = 5e3L;
 long nextUpdate = 0L;
@@ -68,8 +71,14 @@ void setup() {
   Serial.println("\n");
   pinMode(2, OUTPUT);
 
-  nextUpdate = millis() + SLEEP_MILLIS;
+  EEPROM.begin(8);
+  TREND = String((uint8_t)EEPROM.read(0));
+
   OTA_HOSTNAME += TREND;
+  BINARY_SERVER_ENDPOINT += TREND;
+  TREND_SERVER_ENDPOINT += TREND;
+
+  nextUpdate = millis() + SLEEP_MILLIS;
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI, PASS);
