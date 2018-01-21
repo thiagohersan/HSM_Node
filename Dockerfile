@@ -6,19 +6,27 @@ RUN apt-get update
 RUN apt-get install -y arduino-core
 ## RUN apt-get install -y arduino-core:armhf
 
-ADD . /opt/build/
+RUN mkdir -p /tmp/build/tom-cube
 
-WORKDIR /opt/build/deps/esp8266/tools/
+WORKDIR /tmp/build
+RUN git clone https://github.com/esp8266/Arduino.git esp8266
+RUN git clone https://github.com/plerup/makeEspArduino.git
+RUN git clone https://github.com/adafruit/Adafruit_NeoPixel.git libraries/Adafruit_NeoPixel
+
+WORKDIR /tmp/build/esp8266
+RUN git checkout tags/2.1.0-rc2
+
+WORKDIR /tmp/build/esp8266/tools
 RUN python get.py
 
-WORKDIR /opt/build/
-RUN mkdir deps/tom-cube && cp *.* deps/tom-cube/
+ADD *.h *.cpp *.ino /tmp/build/tom-cube/
 
-WORKDIR /opt/build/deps/tom-cube
+WORKDIR /tmp/build/tom-cube
+
 RUN md5Hash=$(cat tom-cube.ino Trend.h Trend.cpp | md5sum | grep -oP [0-9a-fA-F]+) && \
     sed -i "s/deadbeef/${md5Hash}/g" parameters.h
 
-WORKDIR /opt/build/deps/
+WORKDIR /tmp/build
 RUN make -f ./makeEspArduino/makeEspArduino.mk \
          ESP_ROOT=./esp8266 \
          SKETCH=./tom-cube/tom-cube.ino \
@@ -26,5 +34,4 @@ RUN make -f ./makeEspArduino/makeEspArduino.mk \
          EXCLUDE_DIRS=./libraries/Adafruit_NeoPixel/examples \
          BUILD_ROOT=./mkESP
 
-WORKDIR /opt/build/
-CMD ["cp", "deps/mkESP/tom-cube_generic/tom-cube.bin", "/opt/tom-cube/bin"]
+CMD ["cp", "mkESP/tom-cube_generic/tom-cube.bin", "/opt/tom-cube/bin"]

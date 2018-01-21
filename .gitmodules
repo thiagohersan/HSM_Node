@@ -1,9 +1,0 @@
-[submodule "deps/esp8266"]
-	path = deps/esp8266
-	url = https://github.com/esp8266/Arduino.git
-[submodule "deps/libraries/Adafruit_NeoPixel"]
-	path = deps/libraries/Adafruit_NeoPixel
-	url = https://github.com/adafruit/Adafruit_NeoPixel.git
-[submodule "deps/makeEspArduino"]
-	path = deps/makeEspArduino
-	url = https://github.com/plerup/makeEspArduino.git
