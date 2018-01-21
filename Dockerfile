@@ -24,7 +24,7 @@ ADD *.h *.cpp *.ino /tmp/build/tom-cube/
 WORKDIR /tmp/build/tom-cube
 
 RUN md5Hash=$(cat tom-cube.ino Trend.h Trend.cpp | md5sum | grep -oP [0-9a-fA-F]+) && \
-    sed -i "s/deadbeef/${md5Hash}/g" parameters.h
+    sed -i "s/deadbeef/${md5Hash}/g" tom-cube.ino
 
 WORKDIR /tmp/build
 RUN make -f ./makeEspArduino/makeEspArduino.mk \
