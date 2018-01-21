@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <EEPROM.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
@@ -31,6 +32,13 @@ void setup() {
   Serial.begin(115200);
   Serial.println("\n");
   pinMode(2, OUTPUT);
+
+  EEPROM.begin(8);
+  for (int i = 0; i < 8; i++) {
+    EEPROM.write(i, 0);
+  }
+  EEPROM.write(0, (uint8_t)TREND.toInt());
+  EEPROM.end();
 
   nextUpdate = millis() + SLEEP_MILLIS;
   OTA_HOSTNAME += TREND;
