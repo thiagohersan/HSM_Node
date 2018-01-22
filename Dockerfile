@@ -1,10 +1,9 @@
-FROM node:4.8.7-wheezy
+FROM node:4.8.7-stretch
 
 RUN dpkg --add-architecture armhf
 RUN apt-get update
 
 RUN apt-get install -y arduino-core
-## RUN apt-get install -y arduino-core:armhf
 
 RUN mkdir -p /tmp/build/tom-cube
 
@@ -12,9 +11,6 @@ WORKDIR /tmp/build
 RUN git clone https://github.com/esp8266/Arduino.git esp8266
 RUN git clone https://github.com/plerup/makeEspArduino.git
 RUN git clone https://github.com/adafruit/Adafruit_NeoPixel.git libraries/Adafruit_NeoPixel
-
-WORKDIR /tmp/build/esp8266
-RUN git checkout tags/2.1.0-rc2
 
 WORKDIR /tmp/build/esp8266/tools
 RUN python get.py
