@@ -1,14 +1,14 @@
 ## ToM: Cube
 
-Code for the [NodeMCUs](https://nodemcu.readthedocs.io/en/master/) (ESP8266) that connects the LEDs inside the cubes to the [app](https://github.com/thiagohersan/tom) and [binary](https://github.com/thiagohersan/tom-cube-binary-server) servers.
+Code for the [NodeMCU](https://nodemcu.readthedocs.io/en/master/) modules that connect the LEDs inside the cubes to the [app](https://github.com/thiagohersan/tom) and [binary](https://github.com/thiagohersan/tom-cube-binary-server) servers.
 
-The binary can be built using Docker.
+Their binary can be built using Docker.
 
 --- 
 
 1. **Clone repository:**
 ```
-git clone git@github.com:thiagohersan/tom-cube-binary-server.git
+git clone https://github.com/thiagohersan/tom-cube.git
 ```
 
 2. **Copy** ```parameters.h.example``` **to** ```parameters.h``` **and change values for WiFi network name, WiFi password, app server address:port and binary server address:port:**  
@@ -39,3 +39,5 @@ docker-compose up
 ```
 bin/tom-cube.bin
 ```
+
+6. **Binary can be flashed directly to NodeMCU using command-line tools or an [update server](https://github.com/thiagohersan/tom-cube-binary-server)**
