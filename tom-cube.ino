@@ -8,22 +8,15 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#define TEST 0
-
 #include "Trend.h"
-#include "wifipass.h"
+#include "parameters.h"
 
 String BINARY_VERSION = "deadbeef";
 
 String OTA_HOSTNAME = "ToM-";
 String TREND = "";
 
-String BINARY_SERVER_ADDRESS = "10.10.81.10";
-int BINARY_SERVER_PORT = 8000;
 String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION;
-
-String TREND_SERVER_ADDRESS = "10.10.81.10";
-int TREND_SERVER_PORT = 8000;
 String TREND_SERVER_ENDPOINT = "/panel/cubes/";
 
 long SLEEP_MILLIS = 5e3L;
@@ -73,7 +66,7 @@ void setup() {
   nextUpdate = millis() + SLEEP_MILLIS;
 
   WiFi.mode(WIFI_STA);
-  WiFi.begin(WIFI, PASS);
+  WiFi.begin(WIFI_SSID.c_str(), WIFI_PASS.c_str());
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }

@@ -1,4 +1,4 @@
 .DS*
 *.bin
-.wifipass
-wifipass.h
+.parameters
+parameters.h
