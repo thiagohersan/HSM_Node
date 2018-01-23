@@ -8,9 +8,9 @@ services:
 before_script:
   - echo "#define WIFI \"$MY_WIFI\"" > wifipass.h
   - echo "#define PASS \"$MY_PASS\"" >> wifipass.h
-  - cat wifipass.h
 
-#script:
+script:
+  - cat wifipass.h
 #  - docker-compose build
 #  - docker-compose up
 
