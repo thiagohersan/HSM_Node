@@ -19,8 +19,11 @@ ADD *.h *.cpp *.ino /tmp/build/tom-cube/
 
 WORKDIR /tmp/build/tom-cube
 
-RUN md5Hash=$(cat tom-cube.ino Trend.h Trend.cpp | md5sum | grep -oP [0-9a-fA-F]+) && \
-    sed -i "s/deadbeef/${md5Hash}/g" tom-cube.ino
+RUN git ls-remote https://github.com/thiagohersan/tom-cube.git | \
+    grep refs/heads/master | cut -f 1 > /tmp/LATEST_COMMIT_HASH
+
+RUN LATEST_COMMIT_HASH=$(cat /tmp/LATEST_COMMIT_HASH) && \
+    sed -i "s/deadbeef/${LATEST_COMMIT_HASH}/g" tom-cube.ino
 
 WORKDIR /tmp/build
 RUN make -f ./makeEspArduino/makeEspArduino.mk \
