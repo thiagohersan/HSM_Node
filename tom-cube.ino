@@ -1,5 +1,5 @@
 #include <Arduino.h>
-//#include <EEPROM.h>
+#include <EEPROM.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
@@ -9,16 +9,16 @@
 
 #include <Adafruit_NeoPixel.h>
 
-#include "FS.h"
-
 #include "Trend.h"
 #include "wifipass.h"
 #include "parameters.h"
 
 int TREND_ORDER[] = {7, 12, 18, 8, 4, 21, 24, 22, 16, 2, 17, 11, 9, 10, 23, 5, 3, 1, 15, 20, 13, 6, 14, 19};
-int TREND_ORDER_SIZE = 24;
+int TREND_ORDER_SIZE = sizeof(TREND_ORDER)/sizeof(TREND_ORDER[0]);
 
+String BINARY_VERSION = "fa4e57a75";
 String OTA_HOSTNAME = "ToM-";
+String TREND = "";
 
 String BINARY_SERVER_ADDRESS = "10.10.81.100";
 int BINARY_SERVER_PORT = 8000;
@@ -35,31 +35,16 @@ void setup() {
   Serial.println("\n");
   pinMode(2, OUTPUT);
 
-  /*
-  EEPROM.begin(8);
-  for (int i = 0; i < 8; i++) {
-    EEPROM.write(i, 0);
-  }
-  EEPROM.write(0, (uint8_t)TREND.toInt());
-  EEPROM.end();
-  */
-
-  SPIFFS.begin();
-  File trend_file = SPIFFS.open("/trend.txt", "w+");
-  if (trend_file) {
-    trend_file.print("TREND:");
-    trend_file.println(TREND);
-  }
-  trend_file.close();
-
   nextUpdate = millis() + SLEEP_MILLIS;
-  OTA_HOSTNAME += TREND;
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI, PASS);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
+
+  TREND = WiFi.localIP()[3];
+  OTA_HOSTNAME += TREND;
 
   setupAndStartOTA();
   checkForNewBinary();
