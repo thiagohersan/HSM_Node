@@ -5,10 +5,12 @@ language: node_js
 services:
   - docker
 
-before_install:
-- docker-compose build
+before_script:
+- echo "#define WIFI $MY_WIFI" > wifipass.h
+- echo "#define PASS $MY_PASS" >> wifipass.h
 
 script:
+- docker-compose build
 - docker-compose up
 
 before_deploy:
