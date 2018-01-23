@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <EEPROM.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
@@ -71,12 +70,6 @@ void setup() {
   Serial.println("\n");
   pinMode(2, OUTPUT);
 
-  EEPROM.begin(8);
-  TREND = String((uint8_t)EEPROM.read(0));
-
-  OTA_HOSTNAME += TREND;
-  TREND_SERVER_ENDPOINT += TREND;
-
   nextUpdate = millis() + SLEEP_MILLIS;
 
   WiFi.mode(WIFI_STA);
@@ -84,6 +77,10 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
+
+  TREND = WiFi.localIP()[3];
+  OTA_HOSTNAME += TREND;
+  TREND_SERVER_ENDPOINT += TREND;
 
   setupAndStartOTA();
   checkForNewBinary();
