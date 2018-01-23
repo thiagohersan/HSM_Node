@@ -4,6 +4,9 @@ String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION;
 String OTA_HOSTNAME = "ToM-";
 String TREND = "";
 
+long UPDATE_PERIOD_MILLIS = 30e3L;
+long nextUpdate = 0L;
+
 bool needsReset = false;
 
 void checkForNewBinary() {
