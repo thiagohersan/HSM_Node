@@ -1,0 +1,5 @@
+String WIFI_SSID = "my-network";
+String WIFI_PASS = "my-password";
+
+String BINARY_SERVER_ADDRESS = "127.0.0.1";
+int BINARY_SERVER_PORT = 8000;
