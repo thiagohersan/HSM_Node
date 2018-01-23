@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <EEPROM.h>
+//#include <EEPROM.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266mDNS.h>
 #include <WiFiUdp.h>
@@ -8,6 +8,8 @@
 #include <ArduinoOTA.h>
 
 #include <Adafruit_NeoPixel.h>
+
+#include "FS.h"
 
 #include "Trend.h"
 #include "wifipass.h"
@@ -20,7 +22,7 @@ String OTA_HOSTNAME = "ToM-";
 
 String BINARY_SERVER_ADDRESS = "10.10.81.100";
 int BINARY_SERVER_PORT = 8000;
-String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION + "/" + TREND;
+String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION;
 
 long SLEEP_MILLIS = 30e3L;
 long nextUpdate = 0L;
@@ -33,12 +35,22 @@ void setup() {
   Serial.println("\n");
   pinMode(2, OUTPUT);
 
+  /*
   EEPROM.begin(8);
   for (int i = 0; i < 8; i++) {
     EEPROM.write(i, 0);
   }
   EEPROM.write(0, (uint8_t)TREND.toInt());
   EEPROM.end();
+  */
+
+  SPIFFS.begin();
+  File trend_file = SPIFFS.open("/trend.txt", "w+");
+  if (trend_file) {
+    trend_file.print("TREND:");
+    trend_file.println(TREND);
+  }
+  trend_file.close();
 
   nextUpdate = millis() + SLEEP_MILLIS;
   OTA_HOSTNAME += TREND;
