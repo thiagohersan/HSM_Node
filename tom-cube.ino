@@ -20,8 +20,8 @@ void setup() {
   pinMode(2, OUTPUT);
 
   randomSeed(analogRead(A0));
-  nextTrendUpdate = millis() + (UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
-  nextBinaryUpdate = millis() + (UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
+  nextTrendUpdate = millis() + (TREND_UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
+  nextBinaryUpdate = millis() + (BINARY_UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID.c_str(), WIFI_PASS.c_str());
