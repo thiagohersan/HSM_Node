@@ -23,7 +23,7 @@ RUN git ls-remote https://github.com/thiagohersan/tom-cube.git | \
     grep refs/heads/master | cut -f 1 > /tmp/LATEST_COMMIT_HASH
 
 RUN LATEST_COMMIT_HASH=$(cat /tmp/LATEST_COMMIT_HASH) && \
-    sed -i "s/deadbeef/${LATEST_COMMIT_HASH}/g" tom-cube.ino
+    sed -i "s/deadbeef/${LATEST_COMMIT_HASH}/g" tom-cube.h
 
 WORKDIR /tmp/build
 RUN make -f ./makeEspArduino/makeEspArduino.mk \
