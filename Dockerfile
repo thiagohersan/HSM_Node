@@ -28,9 +28,11 @@ RUN LATEST_COMMIT_HASH=$(cat /tmp/LATEST_COMMIT_HASH) && \
 WORKDIR /tmp/build
 RUN make -f ./makeEspArduino/makeEspArduino.mk \
          ESP_ROOT=./esp8266 \
+         CHIP=esp8266 \
+         BOARD=nodemcuv2 \
          SKETCH=./tom-cube/tom-cube.ino \
          CUSTOM_LIBS=./libraries \
          EXCLUDE_DIRS=./libraries/Adafruit_NeoPixel/examples \
          BUILD_ROOT=./mkESP
 
-CMD ["cp", "mkESP/tom-cube_generic/tom-cube.bin", "/opt/tom-cube/bin"]
+CMD ["cp", "mkESP/tom-cube_nodemcuv2/tom-cube.bin", "/opt/tom-cube/bin"]
