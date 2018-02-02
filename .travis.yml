@@ -27,7 +27,7 @@ script:
 before_deploy:
   - git config --local user.name "$USER_NAME"
   - git config --local user.email "$USER_EMAIL"
-  - git tag "tag-$(git log --format=%h -1)"
+  - git tag "tag-$(git log --format=%H -1)"
 
 deploy:
   provider: releases
