@@ -1,11 +1,16 @@
 String BINARY_VERSION = "deadbeef";
 String BINARY_SERVER_ENDPOINT = "/bin/" + BINARY_VERSION;
 
+String TREND_SERVER_ENDPOINT = "/panel/cubes/";
+
 String OTA_HOSTNAME = "ToM-";
 String TREND = "";
 
-long UPDATE_PERIOD_MILLIS = 30e3L;
-long nextUpdate = 0L;
+long TREND_UPDATE_PERIOD_MILLIS = 30e3L;
+long nextTrendUpdate = 0L;
+
+long BINARY_UPDATE_PERIOD_MILLIS = 120e3L;
+long nextBinaryUpdate = 0L;
 
 bool needsReset = false;
 

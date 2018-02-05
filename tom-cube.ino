@@ -23,7 +23,8 @@ void setup() {
   pinMode(2, OUTPUT);
 
   randomSeed(analogRead(A0));
-  nextUpdate = millis() + (UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
+  nextTrendUpdate = millis() + (TREND_UPDATE_PERIOD_MILLIS + 1e3L * random(0, 2));
+  nextBinaryUpdate = millis() + (BINARY_UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID.c_str(), WIFI_PASS.c_str());
@@ -33,6 +34,7 @@ void setup() {
 
   TREND = WiFi.localIP()[3];
   OTA_HOSTNAME += TREND;
+  TREND_SERVER_ENDPOINT += TREND;
 
   setupAndStartOTA();
 }
@@ -48,13 +50,16 @@ void updateTrend() {
 void loop() {
   if (needsReset) reset();
 
-  if (millis() > nextUpdate) {
+  if (millis() > nextTrendUpdate) {
     updateTrend();
-    checkForNewBinary();
-    nextUpdate += (UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
+    nextTrendUpdate += (TREND_UPDATE_PERIOD_MILLIS + 1e3L * random(0, 2));
   }
-  digitalWrite(2, ((millis() / 500) % 2));
 
+  if (millis() > nextBinaryUpdate) {
+    checkForNewBinary();
+    nextBinaryUpdate += (BINARY_UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
+  }
+
+  digitalWrite(2, (nextTrendUpdate / TREND_UPDATE_PERIOD_MILLIS) % 2);
   ArduinoOTA.handle();
 }
-
