@@ -43,9 +43,7 @@ void setupAndStartOTA() {
   ArduinoOTA.begin();
 }
 
-int find(int arr[], int item) {
-  int arrSize = sizeof(arr)/sizeof(arr[0]);
-
+int find(int arr[], int arrSize, int item) {
   for (int i = 0; i < arrSize; i++) {
     if (arr[i] == item) {
       return i;

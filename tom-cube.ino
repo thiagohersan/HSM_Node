@@ -40,7 +40,7 @@ void setup() {
 }
 
 void updateTrend() {
-  int found_index = find(TREND_ORDER, TREND.toInt());
+  int found_index = find(TREND_ORDER, TREND_ORDER_SIZE, TREND.toInt());
   if (found_index <= TREND_ORDER_SIZE) {
     float colorPercent = (float(TREND_ORDER_SIZE) - found_index) / float(TREND_ORDER_SIZE);
     mTrend.setColor(colorPercent);
