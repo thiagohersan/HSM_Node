@@ -27,6 +27,7 @@ script:
 before_deploy:
   - git config --local user.name "$USER_NAME"
   - git config --local user.email "$USER_EMAIL"
+  - echo "$TRAVIS_BRANCH-$(git log --format=%h -1)"
   - git tag "$TRAVIS_BRANCH-$(git log --format=%h -1)"
 
 deploy:
