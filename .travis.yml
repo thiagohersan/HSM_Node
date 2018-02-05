@@ -1,0 +1,37 @@
+sudo: required
+
+language: node_js
+
+notifications:
+  email: false
+
+branches:
+  except:
+  - /^[\w]+-[0-9a-fA-F]+$/
+
+services:
+  - docker
+
+before_script:
+  - echo "String WIFI_SSID = \"$MY_WIFI_SSID\";" > parameters.h
+  - echo "String WIFI_PASS = \"$MY_WIFI_PASS\";" >> parameters.h
+  - echo "String BINARY_SERVER_ADDRESS = \"$MY_BINARY_SERVER_ADDRESS\";" >> parameters.h
+  - echo "int BINARY_SERVER_PORT = $MY_BINARY_SERVER_PORT;" >> parameters.h
+  - echo "String TREND_SERVER_ADDRESS = \"$MY_TREND_SERVER_ADDRESS\";" >> parameters.h
+  - echo "int TREND_SERVER_PORT = $MY_TREND_SERVER_PORT;" >> parameters.h
+
+script:
+  - docker-compose build
+  - docker-compose up
+
+before_deploy:
+  - git config --local user.name "$USER_NAME"
+  - git config --local user.email "$USER_EMAIL"
+  - git tag "$TRAVIS_BRANCH-$(git log --format=%h -1)"
+
+deploy:
+  provider: releases
+  api_key: $GHTOKEN
+  file: "bin/tom-cube.bin"
+  body: "$TRAVIS_BRANCH: $TRAVIS_COMMIT_MESSAGE"
+  skip_cleanup: true
