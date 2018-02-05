@@ -7,7 +7,7 @@ notifications:
 
 branches:
   except:
-  - /^[\w]+-[0-9a-fA-F]+$/
+  - /^([\w]+-)+[0-9a-fA-F]+$/
 
 services:
   - docker
