@@ -27,7 +27,10 @@ script:
 before_deploy:
   - git config --local user.name "$USER_NAME"
   - git config --local user.email "$USER_EMAIL"
-  - git tag "$TRAVIS_BRANCH-$(git log --format=%h -1)" "$(git log --format=%H -1)"
+  - git checkout fake-stats
+  - git tag "$TRAVIS_BRANCH-$(git log --format=%h -1)" $TRAVIS_COMMIT
+  - sed -i -e 's/git@github.com:/https:\/\/thiagohersan:$GHTOKEN@github.com\//g' .git/config
+  - git push orign "$TRAVIS_BRANCH-$(git log --format=%h -1)"
 
 deploy:
   provider: releases
