@@ -27,9 +27,7 @@ script:
 before_deploy:
   - git config --local user.name "$USER_NAME"
   - git config --local user.email "$USER_EMAIL"
-  - git checkout fake-stats
-  - git tag "$TRAVIS_BRANCH-$(git log --format=%h -1)" fake-stats
-  - echo $TRAVIS_COMMIT
+  - git tag -a "$TRAVIS_BRANCH-$(git log --format=%h -1)" $TRAVIS_COMMIT
 
 deploy:
   provider: releases
