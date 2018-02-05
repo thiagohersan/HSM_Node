@@ -20,7 +20,7 @@ ADD *.h *.cpp *.ino /tmp/build/tom-cube/
 WORKDIR /tmp/build/tom-cube
 
 RUN git ls-remote https://github.com/thiagohersan/tom-cube.git | \
-    grep refs/heads/fake-stats | cut -f 1 > /tmp/LATEST_COMMIT_HASH
+    grep refs/heads/fakestats | cut -f 1 > /tmp/LATEST_COMMIT_HASH
 
 RUN LATEST_COMMIT_HASH=$(cat /tmp/LATEST_COMMIT_HASH) && \
     sed -i "s/deadbeef/${LATEST_COMMIT_HASH}/g" tom-cube.h
