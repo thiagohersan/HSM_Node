@@ -13,7 +13,6 @@ services:
   - docker
 
 before_script:
-  - git checkout fake-stats
   - echo "String WIFI_SSID = \"$MY_WIFI_SSID\";" > parameters.h
   - echo "String WIFI_PASS = \"$MY_WIFI_PASS\";" >> parameters.h
   - echo "String BINARY_SERVER_ADDRESS = \"$MY_BINARY_SERVER_ADDRESS\";" >> parameters.h
@@ -28,7 +27,7 @@ script:
 before_deploy:
   - git config --local user.name "$USER_NAME"
   - git config --local user.email "$USER_EMAIL"
-  - git tag "$TRAVIS_BRANCH-$(git log --format=%h -1)"
+  - git tag "$TRAVIS_BRANCH-$(git log --format=%h -1)" fake-stats
 
 deploy:
   provider: releases
@@ -37,4 +36,4 @@ deploy:
   body: "$TRAVIS_BRANCH: $TRAVIS_COMMIT_MESSAGE"
   skip_cleanup: true
   on:
-    branch: fake-stats
+    all_branches: true
