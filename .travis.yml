@@ -35,3 +35,5 @@ deploy:
   file: "bin/tom-cube.bin"
   body: "$TRAVIS_BRANCH: $TRAVIS_COMMIT_MESSAGE"
   skip_cleanup: true
+  on:
+    all_branches: true
