@@ -13,6 +13,7 @@ services:
   - docker
 
 before_script:
+  - git checkout fake-stats
   - echo "String WIFI_SSID = \"$MY_WIFI_SSID\";" > parameters.h
   - echo "String WIFI_PASS = \"$MY_WIFI_PASS\";" >> parameters.h
   - echo "String BINARY_SERVER_ADDRESS = \"$MY_BINARY_SERVER_ADDRESS\";" >> parameters.h
