@@ -6,7 +6,7 @@ String TREND_SERVER_ENDPOINT = "/panel/cubes/";
 String OTA_HOSTNAME = "ToM-";
 String TREND = "";
 
-long TREND_UPDATE_PERIOD_MILLIS = 30e3L;
+long TREND_UPDATE_PERIOD_MILLIS = 1;
 long nextTrendUpdate = 0L;
 
 long BINARY_UPDATE_PERIOD_MILLIS = 120e3L;
@@ -55,4 +55,6 @@ int find(int arr[], int arrSize, int item) {
 void reset() {
   ESP.deepSleep(500e3);
 }
+
+#define min(a,b) ((a)<(b)?(a):(b))
 
