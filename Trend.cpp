@@ -34,8 +34,8 @@ void Trend::sweepColor(float maxColorPercent) {
   mPixels->begin();
 
   for (int i = 0; i < 200; i++) {
-    setLedColorsAndBrightness(min(maxColorPercent, abs(currentColorPercent)),
-                              min(1.0f, abs(currentBrightnessPercent)));
+    setLedColorsAndBrightness(min(maxColorPercent, (float)fabs(currentColorPercent)),
+                              min(1.0f, (float)fabs(currentBrightnessPercent)));
     currentColorPercent += 0.01;
     currentBrightnessPercent += 0.01;
     delay(10);

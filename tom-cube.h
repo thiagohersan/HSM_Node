@@ -56,5 +56,3 @@ void reset() {
   ESP.deepSleep(500e3);
 }
 
-#define min(a,b) ((a)<(b)?(a):(b))
-
