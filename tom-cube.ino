@@ -15,10 +15,9 @@
 int TREND_ORDER[] = {7, 12, 18, 8, 4, 21, 24, 22, 16, 2, 17, 11, 9, 10, 23, 5, 3, 1, 15, 20, 13, 6, 14, 19};
 int TREND_ORDER_SIZE = sizeof(TREND_ORDER) / sizeof(TREND_ORDER[0]);
 
-Trend mTrend;
+float TREND_HEAT_PERCENT;
 
-float currentPercent;
-float maxPercent;
+Trend mTrend;
 
 void setup() {
   Serial.begin(115200);
@@ -39,18 +38,12 @@ void setup() {
   OTA_HOSTNAME += TREND;
   TREND_SERVER_ENDPOINT += TREND;
 
-  currentPercent = 0;
-  maxPercent = (float(TREND_ORDER_SIZE) - find(TREND_ORDER, TREND_ORDER_SIZE, TREND.toInt())) / float(TREND_ORDER_SIZE);
-
+  TREND_HEAT_PERCENT = (float(TREND_ORDER_SIZE) - find(TREND_ORDER, TREND_ORDER_SIZE, TREND.toInt())) / float(TREND_ORDER_SIZE);
   setupAndStartOTA();
 }
 
 void updateTrend() {
-  currentPercent = currentPercent + 0.01;
-  if (currentPercent > 1.0) {
-    currentPercent = -currentPercent;
-  }
-  mTrend.setColor(min(maxPercent, abs(currentPercent)));
+  mTrend.sweepColor(TREND_HEAT_PERCENT);
 }
 
 void loop() {
