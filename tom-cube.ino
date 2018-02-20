@@ -27,6 +27,7 @@ void setup() {
   WiFi.begin(WIFI_SSID.c_str(), WIFI_PASS.c_str());
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
+    Serial.println("\nNot Connected");
   }
   Serial.println("\nOn WiFi");
 
