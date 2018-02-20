@@ -26,11 +26,11 @@ void setup() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID.c_str(), WIFI_PASS.c_str());
 
-  for(int counter=0; (WiFi.status() != WL_CONNECTED) && (counter < 32); counter++) {
+  for (int counter = 0; (WiFi.status() != WL_CONNECTED) && (counter < 32); counter++) {
     delay(500);
   }
 
-  TREND = WiFi.localIP()[3];
+  TREND = getTrendFromMacAddress(WiFi.macAddress());
   OTA_HOSTNAME += TREND;
   TREND_SERVER_ENDPOINT += TREND;
 

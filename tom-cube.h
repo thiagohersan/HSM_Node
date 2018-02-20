@@ -47,3 +47,28 @@ void reset() {
   ESP.deepSleep(500e3);
 }
 
+String getTrendFromMacAddress(String mac) {
+  if (mac == "2C:3A:E8:1C:C2:E7") return "1";
+  if (mac == "2C:3A:E8:1C:BB:6B") return "2";
+  if (mac == "2C:3A:E8:1C:BF:94") return "3";
+  if (mac == "2C:3A:E8:1C:C6:74") return "4";
+  if (mac == "2C:3A:E8:1C:8E:F0") return "5";
+  if (mac == "2C:3A:E8:1C:95:CB") return "6";
+  if (mac == "2C:3A:E8:0E:5A:B2") return "7";
+  if (mac == "2C:3A:E8:1C:C4:E7") return "8";
+  if (mac == "2C:3A:E8:0B:95:2D") return "9";
+  if (mac == "2C:3A:E8:1C:C8:2D") return "10";
+  if (mac == "60:01:94:42:09:4C") return "11";
+  if (mac == "2C:3A:E8:1C:C4:90") return "12";
+  if (mac == "2C:3A:E8:1C:C6:90") return "16";
+  if (mac == "2C:3A:E8:1B:02:18") return "17";
+  if (mac == "2C:3A:E8:1C:BF:D0") return "18";
+  if (mac == "2C:3A:E8:1C:6F:28") return "19";
+  if (mac == "2C:3A:E8:1C:BD:19") return "21";
+  if (mac == "2C:3A:E8:1C:CB:C0") return "22";
+  if (mac == "2C:3A:E8:1C:C7:CB") return "23";
+  if (mac == "2C:3A:E8:1C:C4:D6") return "24";
+  if (mac == "2C:3A:E8:1C:CA:E0") return "64";
+  return "0";
+}
+
