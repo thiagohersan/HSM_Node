@@ -28,6 +28,7 @@ void setup() {
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
   }
+  Serial.println("\nOn WiFi");
 
   TREND = WiFi.localIP()[3];
   OTA_HOSTNAME += TREND;
@@ -39,12 +40,14 @@ void setup() {
 void updateTrend() {
   if (WiFi.status() != WL_CONNECTED) return;
 
+  Serial.println("\nUpdate");
   HTTPClient http;
   http.begin("http://" + TREND_SERVER_ADDRESS + ":" + TREND_SERVER_PORT + TREND_SERVER_ENDPOINT);
   int httpCode = http.GET();
   delay(10);
 
   if (httpCode == HTTP_CODE_OK) {
+    Serial.println("\nSweping");
     float colorPercent = http.getString().toFloat() / 100.0;
     http.end();
     mTrend.sweepColor(colorPercent);
