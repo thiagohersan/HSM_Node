@@ -19,9 +19,6 @@ void setup() {
   Serial.println("\nSetup");
   pinMode(2, OUTPUT);
 
-  Serial.println(WIFI_SSID.c_str());
-  Serial.println(WIFI_PASS.c_str());
-
   randomSeed(analogRead(A0));
   nextTrendUpdate = millis() + (TREND_UPDATE_PERIOD_MILLIS + 1e3L * random(0, 2));
   nextBinaryUpdate = millis() + (BINARY_UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
@@ -30,9 +27,7 @@ void setup() {
   WiFi.begin(WIFI_SSID.c_str(), WIFI_PASS.c_str());
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.println("\nNot Connected");
   }
-  Serial.println("\nOn WiFi");
 
   TREND = WiFi.localIP()[3];
   OTA_HOSTNAME += TREND;
@@ -44,14 +39,12 @@ void setup() {
 void updateTrend() {
   if (WiFi.status() != WL_CONNECTED) return;
 
-  Serial.println("\nUpdating Trend");
   HTTPClient http;
   http.begin("http://" + TREND_SERVER_ADDRESS + ":" + TREND_SERVER_PORT + TREND_SERVER_ENDPOINT);
   int httpCode = http.GET();
   delay(10);
 
   if (httpCode == HTTP_CODE_OK) {
-    Serial.println("HTTP OK");
     float colorPercent = http.getString().toFloat() / 100.0;
     http.end();
     mTrend.setColor(colorPercent);
