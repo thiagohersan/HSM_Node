@@ -25,7 +25,8 @@ void setup() {
 
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID.c_str(), WIFI_PASS.c_str());
-  while (WiFi.status() != WL_CONNECTED) {
+
+  for(int counter=0; (WiFi.status() != WL_CONNECTED) && (counter < 32); counter++) {
     delay(500);
   }
 
@@ -37,8 +38,6 @@ void setup() {
 }
 
 void updateTrend() {
-  if (WiFi.status() != WL_CONNECTED) return;
-
   HTTPClient http;
   http.begin("http://" + TREND_SERVER_ADDRESS + ":" + TREND_SERVER_PORT + TREND_SERVER_ENDPOINT);
   int httpCode = http.GET();
@@ -57,12 +56,12 @@ void loop() {
   if (needsReset) reset();
 
   if (millis() > nextTrendUpdate) {
-    updateTrend();
+    if (WiFi.status() == WL_CONNECTED) updateTrend();
     nextTrendUpdate += (TREND_UPDATE_PERIOD_MILLIS + 1e3L * random(0, 2));
   }
 
   if (millis() > nextBinaryUpdate) {
-    checkForNewBinary();
+    if (WiFi.status() == WL_CONNECTED) checkForNewBinary();
     nextBinaryUpdate += (BINARY_UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
   }
 
