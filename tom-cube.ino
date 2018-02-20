@@ -16,7 +16,7 @@ Trend mTrend;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("\n");
+  Serial.println("\nSetup");
   pinMode(2, OUTPUT);
 
   randomSeed(analogRead(A0));
@@ -40,17 +40,17 @@ void setup() {
 void updateTrend() {
   if (WiFi.status() != WL_CONNECTED) return;
 
-  Serial.println("\nUpdate");
+  Serial.println("\nUpdating Trend");
   HTTPClient http;
   http.begin("http://" + TREND_SERVER_ADDRESS + ":" + TREND_SERVER_PORT + TREND_SERVER_ENDPOINT);
   int httpCode = http.GET();
   delay(10);
 
   if (httpCode == HTTP_CODE_OK) {
-    Serial.println("\nSweping");
+    Serial.println("HTTP OK");
     float colorPercent = http.getString().toFloat() / 100.0;
     http.end();
-    mTrend.sweepColor(colorPercent);
+    mTrend.setColor(colorPercent);
   } else {
     http.end();
   }
