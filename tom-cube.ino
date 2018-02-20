@@ -19,6 +19,9 @@ void setup() {
   Serial.println("\nSetup");
   pinMode(2, OUTPUT);
 
+  Serial.println(WIFI_SSID.c_str());
+  Serial.println(WIFI_PASS.c_str());
+
   randomSeed(analogRead(A0));
   nextTrendUpdate = millis() + (TREND_UPDATE_PERIOD_MILLIS + 1e3L * random(0, 2));
   nextBinaryUpdate = millis() + (BINARY_UPDATE_PERIOD_MILLIS + 1e3L * random(-10, 10));
