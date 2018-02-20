@@ -6,7 +6,7 @@ String TREND_SERVER_ENDPOINT = "/panel/cubes/";
 String OTA_HOSTNAME = "ToM-";
 String TREND = "";
 
-long TREND_UPDATE_PERIOD_MILLIS = 5e3L;
+long TREND_UPDATE_PERIOD_MILLIS = 30e3L;
 long nextTrendUpdate = 0L;
 
 long BINARY_UPDATE_PERIOD_MILLIS = 120e3L;

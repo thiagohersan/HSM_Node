@@ -14,6 +14,7 @@ class Trend {
   public:
     Trend();
     void setColor(float colorPercent);
+    void sweepColor(float maxColorPercent);
 };
 
 

@@ -26,6 +26,23 @@ void Trend::setColor(float colorPercent) {
   delete mPixels;
 }
 
+void Trend::sweepColor(float maxColorPercent) {
+  float currentColorPercent = -maxColorPercent;
+  float currentBrightnessPercent = -1.0f;
+
+  mPixels = new Adafruit_NeoPixel(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
+  mPixels->begin();
+
+  for (int i = 0; i < 200; i++) {
+    setLedColorsAndBrightness(min(maxColorPercent, (float)fabs(currentColorPercent)),
+                              min(1.0f, (float)fabs(currentBrightnessPercent)));
+    currentColorPercent += 0.01;
+    currentBrightnessPercent += 0.01;
+    delay(10);
+  }
+  delete mPixels;
+}
+
 uint32_t Trend::lerpColor(uint32_t c0, uint32_t c1, float pos) {
   pos = constrain(pos, 0.0, 1.0);
   return Adafruit_NeoPixel::Color((uint8_t) lerp((c0 >> 16) & 0xff, (c1 >> 16) & 0xff, pos),

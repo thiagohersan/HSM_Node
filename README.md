@@ -4,14 +4,14 @@ Code for the [NodeMCU](https://nodemcu.readthedocs.io/en/master/) modules that c
 
 Their binary can be built using Docker.
 
---- 
+---
 
 1. **Clone repository:**
 ```
 git clone https://github.com/thiagohersan/tom-cube.git
 ```
 
-2. **Copy** ```parameters.h.example``` **to** ```parameters.h``` **and change values for WiFi network name, WiFi password, app server address:port and binary server address:port:**  
+2. **Copy** ```parameters.h.example``` **to** ```parameters.h``` **and change values for WiFi network name, WiFi password, app server address:port and binary server address:port:**
 ```
 String WIFI_SSID = "my-network";
 String WIFI_PASS = "my-password";
