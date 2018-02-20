@@ -12,8 +12,14 @@ RUN git clone https://github.com/esp8266/Arduino.git esp8266
 RUN git clone https://github.com/plerup/makeEspArduino.git
 RUN git clone https://github.com/adafruit/Adafruit_NeoPixel.git libraries/Adafruit_NeoPixel
 
+WORKDIR /tmp/build/makeEspArduino
+RUN git fetch && git checkout tags/4.9.2 -b v4.9.2
+
+WORKDIR /tmp/build/libraries/Adafruit_NeoPixel
+RUN git fetch && git checkout tags/1.1.6 -b v1.1.6
+
 WORKDIR /tmp/build/esp8266
-RUN git checkout tags/2.4.0 -b b2.4
+RUN git fetch && git checkout tags/2.4.0 -b v2.4.0
 
 WORKDIR /tmp/build/esp8266/tools
 RUN python get.py
