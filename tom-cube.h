@@ -48,27 +48,27 @@ void reset() {
 }
 
 String getTrendFromMacAddress(String mac) {
-  if (mac == "2C:3A:E8:1C:C2:E7") return "1";
-  if (mac == "2C:3A:E8:1C:BB:6B") return "2";
-  if (mac == "2C:3A:E8:1C:BF:94") return "3";
-  if (mac == "2C:3A:E8:1C:C6:74") return "4";
-  if (mac == "2C:3A:E8:1C:8E:F0") return "5";
-  if (mac == "2C:3A:E8:1C:95:CB") return "6";
-  if (mac == "2C:3A:E8:0E:5A:B2") return "7";
-  if (mac == "2C:3A:E8:1C:C4:E7") return "8";
-  if (mac == "2C:3A:E8:0B:95:2D") return "9";
-  if (mac == "2C:3A:E8:1C:C8:2D") return "10";
-  if (mac == "60:01:94:42:09:4C") return "11";
-  if (mac == "2C:3A:E8:1C:C4:90") return "12";
-  if (mac == "2C:3A:E8:1C:C6:90") return "16";
-  if (mac == "2C:3A:E8:1B:02:18") return "17";
-  if (mac == "2C:3A:E8:1C:BF:D0") return "18";
-  if (mac == "2C:3A:E8:1C:6F:28") return "19";
-  if (mac == "2C:3A:E8:1C:BD:19") return "21";
-  if (mac == "2C:3A:E8:1C:CB:C0") return "22";
-  if (mac == "2C:3A:E8:1C:C7:CB") return "23";
-  if (mac == "2C:3A:E8:1C:C4:D6") return "24";
-  if (mac == "2C:3A:E8:1C:CA:E0") return "64";
+  if (mac.indexOf("2C:3A:E8:1C:C2:E7") != -1) return  "1";
+  if (mac.indexOf("2C:3A:E8:1C:BB:6B") != -1) return  "2";
+  if (mac.indexOf("2C:3A:E8:1C:BF:94") != -1) return  "3";
+  if (mac.indexOf("2C:3A:E8:1C:C6:74") != -1) return  "4";
+  if (mac.indexOf("2C:3A:E8:1C:8E:F0") != -1) return  "5";
+  if (mac.indexOf("2C:3A:E8:1C:95:CB") != -1) return  "6";
+  if (mac.indexOf("2C:3A:E8:0E:5A:B2") != -1) return  "7";
+  if (mac.indexOf("2C:3A:E8:1C:C4:E7") != -1) return  "8";
+  if (mac.indexOf("2C:3A:E8:0B:95:2D") != -1) return  "9";
+  if (mac.indexOf("2C:3A:E8:1C:C8:2D") != -1) return  "10";
+  if (mac.indexOf("60:01:94:42:09:4C") != -1) return  "11";
+  if (mac.indexOf("2C:3A:E8:1C:C4:90") != -1) return  "12";
+  if (mac.indexOf("2C:3A:E8:1C:C6:90") != -1) return  "16";
+  if (mac.indexOf("2C:3A:E8:1B:02:18") != -1) return  "17";
+  if (mac.indexOf("2C:3A:E8:1C:BF:D0") != -1) return  "18";
+  if (mac.indexOf("2C:3A:E8:1C:6F:28") != -1) return  "19";
+  if (mac.indexOf("2C:3A:E8:1C:BD:19") != -1) return  "21";
+  if (mac.indexOf("2C:3A:E8:1C:CB:C0") != -1) return  "22";
+  if (mac.indexOf("2C:3A:E8:1C:C7:CB") != -1) return  "23";
+  if (mac.indexOf("2C:3A:E8:1C:C4:D6") != -1) return  "24";
+  if (mac.indexOf("2C:3A:E8:1C:CA:E0") != -1) return  "64";
   return "0";
 }
 

@@ -30,8 +30,7 @@ void setup() {
     delay(500);
   }
 
-  //TREND = getTrendFromMacAddress(WiFi.macAddress());
-  TREND = WiFi.localIP()[3];
+  TREND = getTrendFromMacAddress(WiFi.macAddress());
   OTA_HOSTNAME += TREND;
   TREND_SERVER_ENDPOINT += TREND;
 
