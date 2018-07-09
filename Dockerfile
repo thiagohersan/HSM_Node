@@ -1,4 +1,4 @@
-FROM node:4.8.7-stretch
+FROM node:8-stretch
 
 RUN dpkg --add-architecture armhf
 RUN apt-get update
